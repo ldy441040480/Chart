@@ -1,0 +1,3 @@
+[submodule "mobile-rn"]
+	path = mobile-rn
+	url = ssh://apache@172.16.9.101/mobile-rn.git
