@@ -1,6 +1,8 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:arcHeader="http://schemas.android.com/apk/res-auto"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
 
     <LinearLayout
         android:id="@+id/layout_chart"
@@ -8,4 +10,16 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"/>
 
-</RelativeLayout>
+    <com.ldy.drawer.chart.ArcHeaderView
+        android:id="@+id/arc_header_view"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        arcHeader:arcHeight="60dp"
+        arcHeader:backgroundColor="#FF3A80"
+        arcHeader:controlHeight="120dp"/>
+
+    <com.ldy.drawer.chart.TestView
+        android:layout_marginTop="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"/>
+</LinearLayout>
