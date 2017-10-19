@@ -38,7 +38,7 @@ public class MainActivity extends Activity {
 
 
         CubeProgressBar progressBar = (CubeProgressBar) findViewById(R.id.progress);
-        progressBar.setProgress(30);
+        progressBar.setCubeProgress(30);
     }
 
     private void addChartView() {
