@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <declare-styleable name="CubeProgressBar">
+    <declare-styleable name="CubeProgressView">
         <attr name="pathInnerColor" format="color|reference"/>
         <attr name="pathOuterColor" format="color|reference"/>
         <attr name="arcInnerColor" format="color|reference"/>

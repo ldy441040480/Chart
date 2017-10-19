@@ -1,13 +1,18 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
-              android:layout_height="match_parent">
+              android:layout_height="match_parent"
+              android:orientation="vertical">
 
     <!--<LinearLayout-->
-        <!--android:id="@+id/layout_chart"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:orientation="vertical"/>-->
+    <!--android:id="@+id/layout_chart"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:orientation="vertical"/>-->
 
+    <com.ldy.drawer.chart.TestView
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_marginTop="20dp"/>
     <!--<com.ldy.drawer.chart.ArcHeaderView-->
         <!--xmlns:arcHeader="http://schemas.android.com/apk/res-auto"-->
         <!--android:id="@+id/arc_header_view"-->
@@ -17,54 +22,59 @@
         <!--arcHeader:backgroundColor="#FF3A80"-->
         <!--arcHeader:controlHeight="120dp"/>-->
 
-    <com.ldy.drawer.chart.CubeProgressBar
-        android:id="@+id/cube_progress_bar_1"
-        android:layout_width="90dp"
-        android:layout_height="90dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginLeft="30dp"/>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-    <com.ldy.drawer.chart.CubeProgressBar
-        xmlns:cube="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/cube_progress_bar_2"
-        android:layout_marginTop="20dp"
-        android:layout_width="90dp"
-        android:layout_height="90dp"
-        android:layout_centerHorizontal="true"
-        cube:pathInnerColor="#ef4123"
-        cube:pathOuterColor="#f7a091"
-        cube:arcInnerColor="#a21c00"
-        cube:arcOuterColor="#99ce7f7f"
-        cube:cubeMax="100"
-        cube:cubeTextColor="#ef4123"
-        cube:cubeTextSize="12sp"
-        cube:cubeMinRate="0.05"
-        cube:cubeStartAngle="135"
-        cube:cubePathWidth="12dp"
-        cube:cubeOvalColor="#ff816b"
-        cube:cubeOvalHeight="6dp"
-        cube:cubeRadius="30dp"/>
+        <com.ldy.drawer.chart.CubeProgressView
+            android:id="@+id/cube_progress_bar_1"
+            android:layout_width="90dp"
+            android:layout_height="90dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="20dp"/>
 
-    <com.ldy.drawer.chart.CubeProgressBar
-        xmlns:cube="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/cube_progress_bar_3"
-        android:layout_marginTop="20dp"
-        android:layout_width="90dp"
-        android:layout_height="90dp"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="20dp"
-        cube:pathInnerColor="#0078c8"
-        cube:pathOuterColor="#7fbbe3"
-        cube:arcInnerColor="#00c1d5"
-        cube:arcOuterColor="#996bdbe6"
-        cube:cubeMax="100"
-        cube:cubeTextColor="#0078c8"
-        cube:cubeTextSize="16sp"
-        cube:cubeMinRate="0.05"
-        cube:cubeStartAngle="135"
-        cube:cubePathWidth="21dp"
-        cube:cubeOvalColor="#62a7d5"
-        cube:cubeOvalHeight="6dp"
-        cube:cubeRadius="40dp"/>
+        <com.ldy.drawer.chart.CubeProgressView
+            xmlns:cube="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/cube_progress_bar_2"
+            android:layout_width="90dp"
+            android:layout_height="90dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            cube:arcInnerColor="#a21c00"
+            cube:arcOuterColor="#99ce7f7f"
+            cube:cubeMax="100"
+            cube:cubeMinRate="0.05"
+            cube:cubeOvalColor="#ff816b"
+            cube:cubeOvalHeight="6dp"
+            cube:cubePathWidth="21dp"
+            cube:cubeStartAngle="135"
+            cube:cubeTextColor="#ef4123"
+            cube:cubeTextSize="16sp"
+            cube:pathInnerColor="#ef4123"
+            cube:pathOuterColor="#f7a091"/>
 
-</RelativeLayout>
+        <com.ldy.drawer.chart.CubeProgressView
+            xmlns:cube="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/cube_progress_bar_3"
+            android:layout_width="90dp"
+            android:layout_height="90dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="20dp"
+            cube:arcInnerColor="#00c1d5"
+            cube:arcOuterColor="#996bdbe6"
+            cube:cubeMax="100"
+            cube:cubeMinRate="0.05"
+            cube:cubeOvalColor="#62a7d5"
+            cube:cubeOvalHeight="6dp"
+            cube:cubePathWidth="21dp"
+            cube:cubeRadius="45dp"
+            cube:cubeStartAngle="135"
+            cube:cubeTextColor="#0078c8"
+            cube:cubeTextSize="16sp"
+            cube:pathInnerColor="#0078c8"
+            cube:pathOuterColor="#7fbbe3"/>
+
+    </RelativeLayout>
+
+</LinearLayout>

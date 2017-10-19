@@ -17,7 +17,7 @@ import android.view.animation.Transformation;
 /**
  * Created by lidongyang on 2017/10/18.
  */
-public class CubeProgressBar extends View {
+public class CubeProgressView extends View {
 
     private static final int   PATH_INNER_COLOR   = 0xFF00C1D5;
     private static final int   PATH_OUTER_COLOR   = 0xFF7EE0EA;
@@ -63,31 +63,31 @@ public class CubeProgressBar extends View {
     private float mCubeOvalHeight;
     private float mCubeStartAngle;
 
-    public CubeProgressBar(Context context) {
+    public CubeProgressView(Context context) {
         this(context, null);
     }
 
-    public CubeProgressBar(Context context, AttributeSet attrs) {
+    public CubeProgressView(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public CubeProgressBar(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    public CubeProgressView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.CubeProgressBar);
-        mPathInnerColor = array.getColor(R.styleable.CubeProgressBar_pathInnerColor, PATH_INNER_COLOR);
-        mPathOuterColor = array.getColor(R.styleable.CubeProgressBar_pathOuterColor, PATH_OUTER_COLOR);
-        mArcInnerColor = array.getColor(R.styleable.CubeProgressBar_arcInnerColor, ARC_INNER_COLOR);
-        mArcOuterColor = array.getColor(R.styleable.CubeProgressBar_arcOuterColor, ARC_OUTER_COLOR);
-        mCubeOvalColor = array.getColor(R.styleable.CubeProgressBar_cubeOvalColor, CUBE_OVAL_COLOR);
-        mCubeTextColor = array.getColor(R.styleable.CubeProgressBar_cubeTextColor, CUBE_TEXT_COLOR);
-        mCubeStartAngle = array.getFloat(R.styleable.CubeProgressBar_cubeStartAngle, CUBE_START_ANGLE);
-        mCubePathWidth = array.getDimension(R.styleable.CubeProgressBar_cubePathWidth, dip2px(CUBE_PATH_WIDTH));
-        mCubeTextSize = array.getDimension(R.styleable.CubeProgressBar_cubeTextSize, dip2px(CUBE_TEXT_SIZE));
-        mCubeOvalHeight = array.getDimension(R.styleable.CubeProgressBar_cubeOvalHeight, dip2px(CUBE_OVAL_HEIGHT));
-        mCubeMax = array.getInt(R.styleable.CubeProgressBar_cubeMax, CUBE_MAX);
-        mCubeProgress = array.getInt(R.styleable.CubeProgressBar_cubeProgress, CUBE_PROGRESS);
-        mCubeMinRate = array.getFloat(R.styleable.CubeProgressBar_cubeMinRate, CUBE_MIN_RATE);
-        mCubeRadius = (int) array.getDimension(R.styleable.CubeProgressBar_cubeRadius, 0);
+        TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.CubeProgressView);
+        mPathInnerColor = array.getColor(R.styleable.CubeProgressView_pathInnerColor, PATH_INNER_COLOR);
+        mPathOuterColor = array.getColor(R.styleable.CubeProgressView_pathOuterColor, PATH_OUTER_COLOR);
+        mArcInnerColor = array.getColor(R.styleable.CubeProgressView_arcInnerColor, ARC_INNER_COLOR);
+        mArcOuterColor = array.getColor(R.styleable.CubeProgressView_arcOuterColor, ARC_OUTER_COLOR);
+        mCubeOvalColor = array.getColor(R.styleable.CubeProgressView_cubeOvalColor, CUBE_OVAL_COLOR);
+        mCubeTextColor = array.getColor(R.styleable.CubeProgressView_cubeTextColor, CUBE_TEXT_COLOR);
+        mCubeStartAngle = array.getFloat(R.styleable.CubeProgressView_cubeStartAngle, CUBE_START_ANGLE);
+        mCubePathWidth = array.getDimension(R.styleable.CubeProgressView_cubePathWidth, dip2px(CUBE_PATH_WIDTH));
+        mCubeTextSize = array.getDimension(R.styleable.CubeProgressView_cubeTextSize, dip2px(CUBE_TEXT_SIZE));
+        mCubeOvalHeight = array.getDimension(R.styleable.CubeProgressView_cubeOvalHeight, dip2px(CUBE_OVAL_HEIGHT));
+        mCubeMax = array.getInt(R.styleable.CubeProgressView_cubeMax, CUBE_MAX);
+        mCubeProgress = array.getInt(R.styleable.CubeProgressView_cubeProgress, CUBE_PROGRESS);
+        mCubeMinRate = array.getFloat(R.styleable.CubeProgressView_cubeMinRate, CUBE_MIN_RATE);
+        mCubeRadius = (int) array.getDimension(R.styleable.CubeProgressView_cubeRadius, 0);
         array.recycle();
 
         initVariable();
@@ -129,9 +129,9 @@ public class CubeProgressBar extends View {
         }
     }
 
-    public CubeProgressBar setCubeColor(@ColorInt int pathInnerColor, @ColorInt int pathOuterColor,
-                             @ColorInt int arcInnerColor, @ColorInt int arcOuterColor,
-                             @ColorInt int cubeOvalColor, @ColorInt int cubeTextColor) {
+    public CubeProgressView setCubeColor(@ColorInt int pathInnerColor, @ColorInt int pathOuterColor,
+                                         @ColorInt int arcInnerColor, @ColorInt int arcOuterColor,
+                                         @ColorInt int cubeOvalColor, @ColorInt int cubeTextColor) {
         this.mPathInnerColor = pathInnerColor;
         this.mPathOuterColor = pathOuterColor;
         this.mArcInnerColor = arcInnerColor;
@@ -141,32 +141,32 @@ public class CubeProgressBar extends View {
         return this;
     }
 
-    public CubeProgressBar setCubePathWidth(float cubePathWidth) {
+    public CubeProgressView setCubePathWidth(float cubePathWidth) {
         this.mCubePathWidth = cubePathWidth;
         return this;
     }
 
-    public CubeProgressBar setCubeTextSize(int cubeTextSize) {
+    public CubeProgressView setCubeTextSize(int cubeTextSize) {
         this.mCubeTextSize = cubeTextSize;
         return this;
     }
 
-    public CubeProgressBar setCubeOvalHeight(int cubeOvalHeight) {
+    public CubeProgressView setCubeOvalHeight(int cubeOvalHeight) {
         this.mCubeOvalHeight = cubeOvalHeight;
         return this;
     }
 
-    public CubeProgressBar setCubeStartAngle(int cubeStartAngle) {
+    public CubeProgressView setCubeStartAngle(int cubeStartAngle) {
         this.mCubeStartAngle = cubeStartAngle;
         return this;
     }
 
-    public CubeProgressBar setCubeMax(int cubeMax) {
+    public CubeProgressView setCubeMax(int cubeMax) {
         this.mCubeMax = cubeMax;
         return this;
     }
 
-    public CubeProgressBar setCubeMinRate(int cubeMinRate) {
+    public CubeProgressView setCubeMinRate(int cubeMinRate) {
         this.mCubeMinRate = cubeMinRate;
         return this;
     }

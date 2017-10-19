@@ -1,10 +1,7 @@
 package com.ldy.drawer.chart;
 
-import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.animation.LinearInterpolator;
 import android.widget.LinearLayout;
 
 import java.util.ArrayList;
@@ -38,13 +35,13 @@ public class MainActivity extends Activity {
 //        valueAnimator.start();
 
 
-        CubeProgressBar progressBar1 = (CubeProgressBar) findViewById(R.id.cube_progress_bar_1);
+        CubeProgressView progressBar1 = (CubeProgressView) findViewById(R.id.cube_progress_bar_1);
         progressBar1.setCubeProgress(30);
 
-        CubeProgressBar progressBar2 = (CubeProgressBar) findViewById(R.id.cube_progress_bar_2);
+        CubeProgressView progressBar2 = (CubeProgressView) findViewById(R.id.cube_progress_bar_2);
         progressBar2.setCubeProgress(45);
 
-        CubeProgressBar progressBar3 = (CubeProgressBar) findViewById(R.id.cube_progress_bar_3);
+        CubeProgressView progressBar3 = (CubeProgressView) findViewById(R.id.cube_progress_bar_3);
         progressBar3.setCubeProgress(1);
     }
 
