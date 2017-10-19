@@ -193,7 +193,6 @@ public class CubeProgressBar extends View {
 
     @Override
     protected void onDraw(Canvas canvas) {
-
         int centerX = mWidth / 2;
         int centerY = mHeight / 2;
         int radius = Math.min(centerX, centerY);
@@ -204,7 +203,7 @@ public class CubeProgressBar extends View {
             sweepAngle = Math.max(realRate, mCubeMinRate) * CUBE_CIRCLE_ANGLE * mAnimationRate;
         }
         drawCubePath(canvas, centerX, centerY, radius);
-        drawCubeArc(canvas, sweepAngle);
+        drawCubeArc(canvas, centerX, centerY, radius, sweepAngle);
         drawCubeOval(canvas, centerX, centerY, radius, sweepAngle);
         drawCubeText(canvas, centerX, centerY, realRate * mAnimationRate);
     }
@@ -216,6 +215,62 @@ public class CubeProgressBar extends View {
     private int dip2px(float size) {
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, size, getContext().getResources()
                 .getDisplayMetrics());
+    }
+
+    private void drawCubePath(Canvas canvas, int centerX, int centerY, int radius) {
+        mCubePaint.setColor(mPathOuterColor);
+        canvas.drawCircle(centerX, centerY, radius - mCubePathWidth / 4, mCubePaint);
+
+        mCubePaint.setColor(mPathInnerColor);
+        canvas.drawCircle(centerX, centerY, radius - mCubePathWidth * 3 / 4, mCubePaint);
+    }
+
+    private void drawCubeArc(Canvas canvas, int centerX, int centerY, int radius, float sweepAngle) {
+        mCubePaint.setColor(mArcInnerColor);
+        mArcPath.set(
+                centerX - radius + mCubePathWidth * 3 / 4,
+                centerY - radius + mCubePathWidth * 3 / 4,
+                centerX + radius - mCubePathWidth * 3 / 4,
+                centerY + radius - mCubePathWidth * 3 / 4);
+        canvas.drawArc(mArcPath, mCubeStartAngle, sweepAngle, false, mCubePaint);
+
+        mCubePaint.setColor(mArcOuterColor);
+        mArcPath.set(
+                centerX - radius + mCubePathWidth / 4,
+                centerY - radius + mCubePathWidth / 4,
+                centerX + radius - mCubePathWidth / 4,
+                centerY + radius - mCubePathWidth / 4);
+        canvas.drawArc(mArcPath, mCubeStartAngle, sweepAngle, false, mCubePaint);
+    }
+
+    private void drawCubeOval(Canvas canvas, int centerX, int centerY, int radius, float sweepAngle) {
+        canvas.rotate(sweepAngle + mCubeStartAngle, centerX, centerY);
+        mOvalPath.set(
+                centerX + radius - mCubePathWidth,
+                centerY - mCubeOvalHeight / 2,
+                centerX + radius,
+                centerY + mCubeOvalHeight / 2);
+        canvas.drawOval(mOvalPath, mCubeOvalPaint);
+        canvas.rotate(-sweepAngle - mCubeStartAngle, centerX, centerY);
+
+        canvas.rotate(mCubeStartAngle, centerX, centerY);
+        mOvalPath.set(
+                centerX + radius - mCubePathWidth,
+                centerY - mCubeOvalHeight / 2,
+                centerX + radius,
+                centerY + mCubeOvalHeight / 2);
+        canvas.drawOval(mOvalPath, mCubeOvalPaint);
+        canvas.rotate(-mCubeStartAngle, centerX, centerY);
+    }
+
+    private void drawCubeText(Canvas canvas, int centerX, int centerY, float progress) {
+        String value = (int) (progress * 100) + "%";
+        mCubeTextPaint.getTextBounds(value, 0, value.length(), mCubeTextBound);
+        canvas.drawText(
+                value,
+                centerX - mCubeTextBound.width() / 2,
+                centerY + mCubeTextBound.height() / 2,
+                mCubeTextPaint);
     }
 
     private class ProgressAnimation extends Animation {
@@ -230,62 +285,6 @@ public class CubeProgressBar extends View {
             mAnimationRate = interpolatedTime;
             postInvalidate();
         }
-    }
-
-    private void drawCubePath(Canvas canvas, int centerX, int centerY, int radius) {
-        mCubePaint.setColor(mPathOuterColor);
-        canvas.drawCircle(centerX, centerY, radius - mCubePathWidth / 4, mCubePaint);
-
-        mCubePaint.setColor(mPathInnerColor);
-        canvas.drawCircle(centerX, centerY, radius - mCubePathWidth * 3 / 4, mCubePaint);
-    }
-
-    private void drawCubeArc(Canvas canvas, float sweepAngle) {
-        mCubePaint.setColor(mArcInnerColor);
-        mArcPath.set(
-                mCubePathWidth * 3 / 4,
-                mCubePathWidth * 3 / 4,
-                mWidth - mCubePathWidth * 3 / 4,
-                mHeight - mCubePathWidth * 3 / 4);
-        canvas.drawArc(mArcPath, mCubeStartAngle, sweepAngle, false, mCubePaint);
-
-        mCubePaint.setColor(mArcOuterColor);
-        mArcPath.set(
-                mCubePathWidth / 4,
-                mCubePathWidth / 4,
-                mWidth - mCubePathWidth / 4,
-                mHeight - mCubePathWidth / 4);
-        canvas.drawArc(mArcPath, mCubeStartAngle, sweepAngle, false, mCubePaint);
-    }
-
-    private void drawCubeOval(Canvas canvas, int centerX, int centerY, int radius, float sweepAngle) {
-        canvas.rotate(sweepAngle + mCubeStartAngle, centerX, centerY);
-        mOvalPath.set(
-                radius * 2 - mCubePathWidth,
-                radius - mCubeOvalHeight / 2,
-                radius * 2,
-                radius + mCubeOvalHeight / 2);
-        canvas.drawOval(mOvalPath, mCubeOvalPaint);
-        canvas.rotate(-sweepAngle - mCubeStartAngle, centerX, centerY);
-
-        canvas.rotate(mCubeStartAngle, centerX, centerY);
-        mOvalPath.set(
-                radius * 2 - mCubePathWidth,
-                radius - mCubeOvalHeight / 2,
-                radius * 2,
-                radius + mCubeOvalHeight / 2);
-        canvas.drawOval(mOvalPath, mCubeOvalPaint);
-        canvas.rotate(-mCubeStartAngle, centerX, centerY);
-    }
-
-    private void drawCubeText(Canvas canvas, int centerX, int centerY, float progress) {
-        String value = (int) (progress * 100) + "%";
-        mCubeTextPaint.getTextBounds(value, 0, value.length(), mCubeTextBound);
-        canvas.drawText(
-                value,
-                centerX - mCubeTextBound.width() / 2,
-                centerY + mCubeTextBound.height() / 2,
-                mCubeTextPaint);
     }
 
 }
