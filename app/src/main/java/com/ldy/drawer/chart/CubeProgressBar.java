@@ -203,10 +203,10 @@ public class CubeProgressBar extends View {
         if (realRate > 0) {
             sweepAngle = Math.max(realRate, mCubeMinRate) * CUBE_CIRCLE_ANGLE * mAnimationRate;
         }
-        drawPath(canvas, centerX, centerY, radius);
-        drawArc(canvas, sweepAngle);
-        drawOval(canvas, centerX, centerY, radius, sweepAngle);
-        drawText(canvas, centerX, centerY, realRate * mAnimationRate);
+        drawCubePath(canvas, centerX, centerY, radius);
+        drawCubeArc(canvas, sweepAngle);
+        drawCubeOval(canvas, centerX, centerY, radius, sweepAngle);
+        drawCubeText(canvas, centerX, centerY, realRate * mAnimationRate);
     }
 
     private float getRateOfProgress(int progress) {
@@ -232,7 +232,7 @@ public class CubeProgressBar extends View {
         }
     }
 
-    private void drawPath(Canvas canvas, int centerX, int centerY, int radius) {
+    private void drawCubePath(Canvas canvas, int centerX, int centerY, int radius) {
         mCubePaint.setColor(mPathOuterColor);
         canvas.drawCircle(centerX, centerY, radius - mCubePathWidth / 4, mCubePaint);
 
@@ -240,7 +240,7 @@ public class CubeProgressBar extends View {
         canvas.drawCircle(centerX, centerY, radius - mCubePathWidth * 3 / 4, mCubePaint);
     }
 
-    private void drawArc(Canvas canvas, float sweepAngle) {
+    private void drawCubeArc(Canvas canvas, float sweepAngle) {
         mCubePaint.setColor(mArcInnerColor);
         mArcPath.set(
                 mCubePathWidth * 3 / 4,
@@ -258,7 +258,7 @@ public class CubeProgressBar extends View {
         canvas.drawArc(mArcPath, mCubeStartAngle, sweepAngle, false, mCubePaint);
     }
 
-    private void drawOval(Canvas canvas, int centerX, int centerY, int radius, float sweepAngle) {
+    private void drawCubeOval(Canvas canvas, int centerX, int centerY, int radius, float sweepAngle) {
         canvas.rotate(sweepAngle + mCubeStartAngle, centerX, centerY);
         mOvalPath.set(
                 radius * 2 - mCubePathWidth,
@@ -278,7 +278,7 @@ public class CubeProgressBar extends View {
         canvas.rotate(-mCubeStartAngle, centerX, centerY);
     }
 
-    private void drawText(Canvas canvas, int centerX, int centerY, float progress) {
+    private void drawCubeText(Canvas canvas, int centerX, int centerY, float progress) {
         String value = (int) (progress * 100) + "%";
         mCubeTextPaint.getTextBounds(value, 0, value.length(), mCubeTextBound);
         canvas.drawText(
