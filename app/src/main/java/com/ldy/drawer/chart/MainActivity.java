@@ -45,7 +45,7 @@ public class MainActivity extends Activity {
         progressBar2.setCubeProgress(45);
 
         CubeProgressBar progressBar3 = (CubeProgressBar) findViewById(R.id.cube_progress_bar_3);
-        progressBar3.setCubeProgress(50);
+        progressBar3.setCubeProgress(1);
     }
 
     private void addChartView() {

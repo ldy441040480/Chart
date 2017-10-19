@@ -43,8 +43,9 @@ public class CubeProgressBar extends View {
     private RectF mOvalPath;
     private Rect mCubeTextBound;
 
-    private int mWidth;
-    private int mHeight;
+    private int mCenterX;
+    private int mCenterY;
+    private int mCubeRadius;
     private int mCubeProgress;
     private int mCubeMax;
     private float mCubeMinRate;
@@ -86,13 +87,13 @@ public class CubeProgressBar extends View {
         mCubeMax = array.getInt(R.styleable.CubeProgressBar_cubeMax, CUBE_MAX);
         mCubeProgress = array.getInt(R.styleable.CubeProgressBar_cubeProgress, CUBE_PROGRESS);
         mCubeMinRate = array.getFloat(R.styleable.CubeProgressBar_cubeMinRate, CUBE_MIN_RATE);
+        mCubeRadius = (int) array.getDimension(R.styleable.CubeProgressBar_cubeRadius, 0);
         array.recycle();
 
         initVariable();
     }
 
     private void initVariable() {
-
         mCubePaint = new Paint();
         mCubePaint.setAntiAlias(true);
         mCubePaint.setStrokeWidth(mCubePathWidth / 2);
@@ -118,8 +119,14 @@ public class CubeProgressBar extends View {
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        mWidth = getMeasuredWidth();
-        mHeight = getMeasuredHeight();
+        mCenterX = getMeasuredWidth() / 2;
+        mCenterY = getMeasuredHeight() / 2;
+        int maxRadius = Math.min(mCenterX, mCenterY);
+        if (mCubeRadius == 0) {
+            mCubeRadius = maxRadius;
+        } else if (mCubeRadius > maxRadius) {
+            mCubeRadius = maxRadius;
+        }
     }
 
     public CubeProgressBar setCubeColor(@ColorInt int pathInnerColor, @ColorInt int pathOuterColor,
@@ -193,23 +200,21 @@ public class CubeProgressBar extends View {
 
     @Override
     protected void onDraw(Canvas canvas) {
-        int centerX = mWidth / 2;
-        int centerY = mHeight / 2;
-        int radius = Math.min(centerX, centerY);
-
         float realRate = getRateOfProgress(mCubeProgress);
-        float sweepAngle = 0f;
-        if (realRate > 0) {
-            sweepAngle = Math.max(realRate, mCubeMinRate) * CUBE_CIRCLE_ANGLE * mAnimationRate;
-        }
-        drawCubePath(canvas, centerX, centerY, radius);
-        drawCubeArc(canvas, centerX, centerY, radius, sweepAngle);
-        drawCubeOval(canvas, centerX, centerY, radius, sweepAngle);
-        drawCubeText(canvas, centerX, centerY, realRate * mAnimationRate);
+        float sweepAngle = getSweepAngle(realRate);
+        drawCubePath(canvas);
+        drawCubeArc(canvas, sweepAngle);
+        drawCubeOval(canvas, sweepAngle);
+        drawCubeText(canvas, realRate * mAnimationRate);
     }
 
     private float getRateOfProgress(int progress) {
         return (float) progress / mCubeMax;
+    }
+
+    private float getSweepAngle(float realRate) {
+        float showRate = (realRate != 0 && realRate < mCubeMinRate) ? mCubeMinRate : realRate;
+        return showRate * CUBE_CIRCLE_ANGLE * mAnimationRate;
     }
 
     private int dip2px(float size) {
@@ -217,59 +222,59 @@ public class CubeProgressBar extends View {
                 .getDisplayMetrics());
     }
 
-    private void drawCubePath(Canvas canvas, int centerX, int centerY, int radius) {
+    private void drawCubePath(Canvas canvas) {
         mCubePaint.setColor(mPathOuterColor);
-        canvas.drawCircle(centerX, centerY, radius - mCubePathWidth / 4, mCubePaint);
+        canvas.drawCircle(mCenterX, mCenterY, mCubeRadius - mCubePathWidth / 4, mCubePaint);
 
         mCubePaint.setColor(mPathInnerColor);
-        canvas.drawCircle(centerX, centerY, radius - mCubePathWidth * 3 / 4, mCubePaint);
+        canvas.drawCircle(mCenterX, mCenterY, mCubeRadius - mCubePathWidth * 3 / 4, mCubePaint);
     }
 
-    private void drawCubeArc(Canvas canvas, int centerX, int centerY, int radius, float sweepAngle) {
+    private void drawCubeArc(Canvas canvas, float sweepAngle) {
         mCubePaint.setColor(mArcInnerColor);
         mArcPath.set(
-                centerX - radius + mCubePathWidth * 3 / 4,
-                centerY - radius + mCubePathWidth * 3 / 4,
-                centerX + radius - mCubePathWidth * 3 / 4,
-                centerY + radius - mCubePathWidth * 3 / 4);
+                mCenterX - mCubeRadius + mCubePathWidth * 3 / 4,
+                mCenterY - mCubeRadius + mCubePathWidth * 3 / 4,
+                mCenterX + mCubeRadius - mCubePathWidth * 3 / 4,
+                mCenterY + mCubeRadius - mCubePathWidth * 3 / 4);
         canvas.drawArc(mArcPath, mCubeStartAngle, sweepAngle, false, mCubePaint);
 
         mCubePaint.setColor(mArcOuterColor);
         mArcPath.set(
-                centerX - radius + mCubePathWidth / 4,
-                centerY - radius + mCubePathWidth / 4,
-                centerX + radius - mCubePathWidth / 4,
-                centerY + radius - mCubePathWidth / 4);
+                mCenterX - mCubeRadius + mCubePathWidth / 4,
+                mCenterY - mCubeRadius + mCubePathWidth / 4,
+                mCenterX + mCubeRadius - mCubePathWidth / 4,
+                mCenterY + mCubeRadius - mCubePathWidth / 4);
         canvas.drawArc(mArcPath, mCubeStartAngle, sweepAngle, false, mCubePaint);
     }
 
-    private void drawCubeOval(Canvas canvas, int centerX, int centerY, int radius, float sweepAngle) {
-        canvas.rotate(sweepAngle + mCubeStartAngle, centerX, centerY);
+    private void drawCubeOval(Canvas canvas, float sweepAngle) {
+        canvas.rotate(sweepAngle + mCubeStartAngle, mCenterX, mCenterY);
         mOvalPath.set(
-                centerX + radius - mCubePathWidth,
-                centerY - mCubeOvalHeight / 2,
-                centerX + radius,
-                centerY + mCubeOvalHeight / 2);
+                mCenterX + mCubeRadius - mCubePathWidth,
+                mCenterY - mCubeOvalHeight / 2,
+                mCenterX + mCubeRadius,
+                mCenterY + mCubeOvalHeight / 2);
         canvas.drawOval(mOvalPath, mCubeOvalPaint);
-        canvas.rotate(-sweepAngle - mCubeStartAngle, centerX, centerY);
+        canvas.rotate(-sweepAngle - mCubeStartAngle, mCenterX, mCenterY);
 
-        canvas.rotate(mCubeStartAngle, centerX, centerY);
+        canvas.rotate(mCubeStartAngle, mCenterX, mCenterY);
         mOvalPath.set(
-                centerX + radius - mCubePathWidth,
-                centerY - mCubeOvalHeight / 2,
-                centerX + radius,
-                centerY + mCubeOvalHeight / 2);
+                mCenterX + mCubeRadius - mCubePathWidth,
+                mCenterY - mCubeOvalHeight / 2,
+                mCenterX + mCubeRadius,
+                mCenterY + mCubeOvalHeight / 2);
         canvas.drawOval(mOvalPath, mCubeOvalPaint);
-        canvas.rotate(-mCubeStartAngle, centerX, centerY);
+        canvas.rotate(-mCubeStartAngle, mCenterX, mCenterY);
     }
 
-    private void drawCubeText(Canvas canvas, int centerX, int centerY, float progress) {
+    private void drawCubeText(Canvas canvas, float progress) {
         String value = (int) (progress * 100) + "%";
         mCubeTextPaint.getTextBounds(value, 0, value.length(), mCubeTextBound);
         canvas.drawText(
                 value,
-                centerX - mCubeTextBound.width() / 2,
-                centerY + mCubeTextBound.height() / 2,
+                mCenterX - mCubeTextBound.width() / 2,
+                mCenterY + mCubeTextBound.height() / 2,
                 mCubeTextPaint);
     }
 

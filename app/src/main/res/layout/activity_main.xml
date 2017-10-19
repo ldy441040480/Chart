@@ -37,12 +37,13 @@
         cube:arcOuterColor="#99ce7f7f"
         cube:cubeMax="100"
         cube:cubeTextColor="#ef4123"
-        cube:cubeTextSize="16sp"
+        cube:cubeTextSize="12sp"
         cube:cubeMinRate="0.05"
         cube:cubeStartAngle="135"
-        cube:cubePathWidth="21dp"
+        cube:cubePathWidth="12dp"
         cube:cubeOvalColor="#ff816b"
-        cube:cubeOvalHeight="6dp"/>
+        cube:cubeOvalHeight="6dp"
+        cube:cubeRadius="30dp"/>
 
     <com.ldy.drawer.chart.CubeProgressBar
         xmlns:cube="http://schemas.android.com/apk/res-auto"
@@ -63,6 +64,7 @@
         cube:cubeStartAngle="135"
         cube:cubePathWidth="21dp"
         cube:cubeOvalColor="#62a7d5"
-        cube:cubeOvalHeight="6dp"/>
+        cube:cubeOvalHeight="6dp"
+        cube:cubeRadius="40dp"/>
 
 </RelativeLayout>
