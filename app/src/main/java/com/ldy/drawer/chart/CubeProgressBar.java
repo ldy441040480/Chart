@@ -176,21 +176,22 @@ public class CubeProgressBar extends View {
     }
 
     public void setCubeProgress(int progress) {
+        if (progress == mCubeProgress) {
+            return;
+        }
         if (progress < 0) {
             progress = 0;
         }
         if (progress > mCubeMax) {
             progress = mCubeMax;
         }
-        if (progress != mCubeProgress) {
-            mCubeProgress = progress;
-            if (progress > 0) {
-                ProgressAnimation animation = new ProgressAnimation();
-                animation.setDuration(CUBE_ANIM_DURATION);
-                startAnimation(animation);
-            } else {
-                initVariable();
-            }
+        this.mCubeProgress = progress;
+        if (progress > 0) {
+            ProgressAnimation animation = new ProgressAnimation();
+            animation.setDuration(CUBE_ANIM_DURATION);
+            startAnimation(animation);
+        } else {
+            initVariable();
         }
     }
 
