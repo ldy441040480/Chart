@@ -17,28 +17,35 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        mLayout = (LinearLayout) findViewById(R.id.layout_chart);
-        addChartView();
 
-        final ArcHeaderView headerView = (ArcHeaderView) findViewById(R.id.arc_header_view);
-        headerView.setControlOffset(0.5f, false);
+//        mLayout = (LinearLayout) findViewById(R.id.layout_chart);
+//        addChartView();
+//
+//        final ArcHeaderView headerView = (ArcHeaderView) findViewById(R.id.arc_header_view);
+//        headerView.setControlOffset(0.5f, false);
+//
+//        ValueAnimator valueAnimator = ValueAnimator.ofFloat(1f, 0.5f, 1.0f, 0.5f, 1.0f, 0.5f, 1.0f, 0.5f);
+//        valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+//            @Override
+//            public void onAnimationUpdate(ValueAnimator animation) {
+//                float value = (float) animation.getAnimatedValue();
+//                Log.i("MainActivity", "onAnimationUpdate value=" + value);
+//                headerView.setControlOffset(value, true);
+//            }
+//        });
+//        valueAnimator.setInterpolator(new LinearInterpolator());
+//        valueAnimator.setDuration(10000L);
+//        valueAnimator.start();
 
-        ValueAnimator valueAnimator = ValueAnimator.ofFloat(1f, 0.5f, 1.0f, 0.5f, 1.0f, 0.5f, 1.0f, 0.5f);
-        valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-                float value = (float) animation.getAnimatedValue();
-                Log.i("MainActivity", "onAnimationUpdate value=" + value);
-                headerView.setControlOffset(value, true);
-            }
-        });
-        valueAnimator.setInterpolator(new LinearInterpolator());
-        valueAnimator.setDuration(10000L);
-        valueAnimator.start();
 
+        CubeProgressBar progressBar1 = (CubeProgressBar) findViewById(R.id.cube_progress_bar_1);
+        progressBar1.setCubeProgress(30);
 
-        CubeProgressBar progressBar = (CubeProgressBar) findViewById(R.id.progress);
-        progressBar.setCubeProgress(30);
+        CubeProgressBar progressBar2 = (CubeProgressBar) findViewById(R.id.cube_progress_bar_2);
+        progressBar2.setCubeProgress(45);
+
+        CubeProgressBar progressBar3 = (CubeProgressBar) findViewById(R.id.cube_progress_bar_3);
+        progressBar3.setCubeProgress(50);
     }
 
     private void addChartView() {

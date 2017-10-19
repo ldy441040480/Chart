@@ -3,12 +3,10 @@ package com.ldy.drawer.chart;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.support.annotation.ColorInt;
-import android.support.annotation.ColorRes;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.util.TypedValue;
@@ -28,10 +26,12 @@ public class CubeProgressBar extends View {
     private static final int   CUBE_OVAL_COLOR    = 0XFF74EFFF;
     private static final int   CUBE_TEXT_COLOR    = 0XFF00C1D5;
 
+    private static final float CUBE_CIRCLE_ANGLE  = 360f;
     private static final float CUBE_PATH_WIDTH    = 21f;
     private static final float CUBE_TEXT_SIZE     = 16f;
     private static final float CUBE_OVAL_HEIGHT   = 6f;
     private static final float CUBE_START_ANGLE   = 135f;
+    private static final float CUBE_MIN_RATE      = 0.05f;
     private static final int   CUBE_MAX           = 100;
     private static final int   CUBE_PROGRESS      = 0;
     private static final long  CUBE_ANIM_DURATION = 500L;
@@ -47,7 +47,8 @@ public class CubeProgressBar extends View {
     private int mHeight;
     private int mCubeProgress;
     private int mCubeMax;
-    private float mAnimationRate;
+    private float mCubeMinRate;
+    private float mAnimationRate = 1f;
 
     private int mPathInnerColor;
     private int mPathOuterColor;
@@ -72,18 +73,19 @@ public class CubeProgressBar extends View {
     public CubeProgressBar(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.CubeProgressBar);
-        mPathInnerColor = (int) array.getDimension(R.styleable.CubeProgressBar_pathInnerColor, PATH_INNER_COLOR);
-        mPathOuterColor = (int) array.getDimension(R.styleable.CubeProgressBar_pathOuterColor, PATH_OUTER_COLOR);
-        mArcInnerColor = (int) array.getDimension(R.styleable.CubeProgressBar_arcInnerColor, ARC_INNER_COLOR);
-        mArcOuterColor = (int) array.getDimension(R.styleable.CubeProgressBar_arcOuterColor, ARC_OUTER_COLOR);
-        mCubeOvalColor = (int) array.getDimension(R.styleable.CubeProgressBar_cubeOvalColor, CUBE_OVAL_COLOR);
-        mCubeTextColor = (int) array.getDimension(R.styleable.CubeProgressBar_cubeTextColor, CUBE_TEXT_COLOR);
+        mPathInnerColor = array.getColor(R.styleable.CubeProgressBar_pathInnerColor, PATH_INNER_COLOR);
+        mPathOuterColor = array.getColor(R.styleable.CubeProgressBar_pathOuterColor, PATH_OUTER_COLOR);
+        mArcInnerColor = array.getColor(R.styleable.CubeProgressBar_arcInnerColor, ARC_INNER_COLOR);
+        mArcOuterColor = array.getColor(R.styleable.CubeProgressBar_arcOuterColor, ARC_OUTER_COLOR);
+        mCubeOvalColor = array.getColor(R.styleable.CubeProgressBar_cubeOvalColor, CUBE_OVAL_COLOR);
+        mCubeTextColor = array.getColor(R.styleable.CubeProgressBar_cubeTextColor, CUBE_TEXT_COLOR);
         mCubeStartAngle = array.getFloat(R.styleable.CubeProgressBar_cubeStartAngle, CUBE_START_ANGLE);
         mCubePathWidth = array.getDimension(R.styleable.CubeProgressBar_cubePathWidth, dip2px(CUBE_PATH_WIDTH));
         mCubeTextSize = array.getDimension(R.styleable.CubeProgressBar_cubeTextSize, dip2px(CUBE_TEXT_SIZE));
         mCubeOvalHeight = array.getDimension(R.styleable.CubeProgressBar_cubeOvalHeight, dip2px(CUBE_OVAL_HEIGHT));
         mCubeMax = array.getInt(R.styleable.CubeProgressBar_cubeMax, CUBE_MAX);
         mCubeProgress = array.getInt(R.styleable.CubeProgressBar_cubeProgress, CUBE_PROGRESS);
+        mCubeMinRate = array.getFloat(R.styleable.CubeProgressBar_cubeMinRate, CUBE_MIN_RATE);
         array.recycle();
 
         initVariable();
@@ -157,6 +159,11 @@ public class CubeProgressBar extends View {
         return this;
     }
 
+    public CubeProgressBar setCubeMinRate(int cubeMinRate) {
+        this.mCubeMinRate = cubeMinRate;
+        return this;
+    }
+
     public int getCubeMax() {
         return mCubeMax;
     }
@@ -186,17 +193,20 @@ public class CubeProgressBar extends View {
 
     @Override
     protected void onDraw(Canvas canvas) {
-        final int centerX = mWidth / 2;
-        final int centerY = mHeight / 2;
-        final int radius = Math.min(centerX, centerY);
 
-        final float progress = getRateOfProgress(mCubeProgress) * mAnimationRate;
-        final float sweepAngle = progress * 360;
+        int centerX = mWidth / 2;
+        int centerY = mHeight / 2;
+        int radius = Math.min(centerX, centerY);
 
+        float realRate = getRateOfProgress(mCubeProgress);
+        float sweepAngle = 0f;
+        if (realRate > 0) {
+            sweepAngle = Math.max(realRate, mCubeMinRate) * CUBE_CIRCLE_ANGLE * mAnimationRate;
+        }
         drawPath(canvas, centerX, centerY, radius);
         drawArc(canvas, sweepAngle);
         drawOval(canvas, centerX, centerY, radius, sweepAngle);
-        drawText(canvas, centerX, centerY, progress);
+        drawText(canvas, centerX, centerY, realRate * mAnimationRate);
     }
 
     private float getRateOfProgress(int progress) {
@@ -211,7 +221,7 @@ public class CubeProgressBar extends View {
     private class ProgressAnimation extends Animation {
 
         private ProgressAnimation() {
-            mAnimationRate = 0;
+            mAnimationRate = 1f;
         }
 
         @Override

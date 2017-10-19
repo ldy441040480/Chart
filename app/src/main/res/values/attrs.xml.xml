@@ -18,6 +18,7 @@
         <attr name="cubeTextSize" format="dimension" />
         <attr name="cubeOvalHeight" format="dimension" />
         <attr name="cubeStartAngle" format="float" />
+        <attr name="cubeMinRate" format="float" />
         <attr name="cubeMax" format="integer" />
         <attr name="cubeProgress" format="integer" />
     </declare-styleable>
