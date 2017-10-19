@@ -21,18 +21,19 @@ public class MainActivity extends Activity {
         addChartView();
 
         final ArcHeaderView headerView = (ArcHeaderView) findViewById(R.id.arc_header_view);
+        headerView.setControlOffset(0.5f, false);
 
-        ValueAnimator valueAnimator = ValueAnimator.ofFloat(1f, 0.5f, 1.0f, 0.5f);
+        ValueAnimator valueAnimator = ValueAnimator.ofFloat(1f, 0.5f, 1.0f, 0.5f, 1.0f, 0.5f, 1.0f, 0.5f);
         valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
                 float value = (float) animation.getAnimatedValue();
                 Log.i("MainActivity", "onAnimationUpdate value=" + value);
-                headerView.setControlOffset(value);
+                headerView.setControlOffset(value, true);
             }
         });
         valueAnimator.setInterpolator(new LinearInterpolator());
-        valueAnimator.setDuration(4000L);
+        valueAnimator.setDuration(10000L);
         valueAnimator.start();
     }
 

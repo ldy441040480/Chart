@@ -9,6 +9,8 @@ import android.graphics.PointF;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.Transformation;
 
 /**
  * Created by lidongyang on 2017/10/18.
@@ -18,6 +20,7 @@ public class ArcHeaderView extends View {
     private static final int DEFAULT_ARC_HEIGHT = 100;
     private static final int DEFAULT_CONTROL_HEIGHT = 0;
     private static final int DEFAULT_ARC_BACKGROUND_COLOR = 0xFFFF3A80;
+    private static final float MAX_OFFSET_VALUE = 1f;
 
     private Paint mPaint;
     private PointF mPointStart, mPointEnd, mPointControl;
@@ -28,7 +31,7 @@ public class ArcHeaderView extends View {
     private int mBackgroundColor;
     private int mArcHeight;
     private int mControlHeight;
-    private float mOffset = 1f;
+    private float mOffset = MAX_OFFSET_VALUE;
 
     public ArcHeaderView(Context context) {
         this(context, null);
@@ -66,10 +69,10 @@ public class ArcHeaderView extends View {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         mWidth = getMeasuredWidth();
         mHeight = getMeasuredHeight();
-        resetPath();
+        resetPath(mOffset);
     }
 
-    public void setControlOffset(float offset) {
+    public void setControlOffset(float offset, boolean anim) {
         if (offset > 1) {
             offset = 1;
         }
@@ -78,13 +81,19 @@ public class ArcHeaderView extends View {
         }
         if (offset != mOffset) {
             this.mOffset = offset;
-            resetPath();
-            invalidate();
+            if (anim) {
+                resetPath(mOffset);
+                invalidate();
+            } else {
+                ArcAnimation animation = new ArcAnimation();
+                animation.setDuration(1000L);
+                startAnimation(animation);
+            }
         }
     }
 
-    private void resetPath() {
-        int offHeight = (int) (mControlHeight * mOffset);
+    private void resetPath(float offset) {
+        int offHeight = (int) (mControlHeight * offset);
 
         mPointStart.x = 0;
         mPointStart.y = mHeight - mArcHeight + mControlHeight - offHeight;
@@ -100,6 +109,16 @@ public class ArcHeaderView extends View {
         mArcPath.addRect(0, 0, mWidth, mHeight - mArcHeight + mControlHeight - offHeight, Path.Direction.CCW);
         mArcPath.moveTo(mPointStart.x, mPointStart.y);
         mArcPath.quadTo(mPointControl.x, mPointControl.y, mPointEnd.x, mPointEnd.y);
+    }
+
+
+    private class ArcAnimation extends Animation {
+        @Override
+        protected void applyTransformation(float interpolatedTime, Transformation t) {
+            super.applyTransformation(interpolatedTime, t);
+            resetPath(MAX_OFFSET_VALUE - interpolatedTime * (MAX_OFFSET_VALUE - mOffset));
+            postInvalidate();
+        }
     }
 
     @Override

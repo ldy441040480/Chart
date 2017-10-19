@@ -18,8 +18,7 @@
         arcHeader:backgroundColor="#FF3A80"
         arcHeader:controlHeight="120dp"/>
 
-    <com.ldy.drawer.chart.TestView
-        android:layout_marginTop="20dp"
-        android:layout_width="match_parent"
-        android:layout_height="300dp"/>
+    <com.ldy.drawer.chart.MyProgressBar
+        android:layout_width="120dp"
+        android:layout_height="120dp"/>
 </LinearLayout>
