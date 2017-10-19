@@ -20,6 +20,6 @@
 
     <com.ldy.drawer.chart.CubeProgressBar
         android:id="@+id/progress"
-        android:layout_width="120dp"
-        android:layout_height="120dp"/>
+        android:layout_width="90dp"
+        android:layout_height="90dp"/>
 </LinearLayout>
