@@ -35,6 +35,10 @@ public class MainActivity extends Activity {
         valueAnimator.setInterpolator(new LinearInterpolator());
         valueAnimator.setDuration(10000L);
         valueAnimator.start();
+
+
+        CubeProgressBar progressBar = (CubeProgressBar) findViewById(R.id.progress);
+        progressBar.setProgress(30);
     }
 
     private void addChartView() {

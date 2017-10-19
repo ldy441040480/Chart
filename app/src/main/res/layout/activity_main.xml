@@ -18,7 +18,8 @@
         arcHeader:backgroundColor="#FF3A80"
         arcHeader:controlHeight="120dp"/>
 
-    <com.ldy.drawer.chart.MyProgressBar
+    <com.ldy.drawer.chart.CubeProgressBar
+        android:id="@+id/progress"
         android:layout_width="120dp"
         android:layout_height="120dp"/>
 </LinearLayout>
