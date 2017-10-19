@@ -7,21 +7,4 @@
         <attr name="controlHeight" format="dimension" />
     </declare-styleable>
 
-    <declare-styleable name="CubeProgressBar">
-        <attr name="pathInnerColor" format="color|reference"/>
-        <attr name="pathOuterColor" format="color|reference"/>
-        <attr name="arcInnerColor" format="color|reference"/>
-        <attr name="arcOuterColor" format="color|reference"/>
-        <attr name="cubeOvalColor" format="color|reference"/>
-        <attr name="cubeTextColor" format="color|reference"/>
-        <attr name="cubePathWidth" format="dimension" />
-        <attr name="cubeRadius" format="dimension" />
-        <attr name="cubeTextSize" format="dimension" />
-        <attr name="cubeOvalHeight" format="dimension" />
-        <attr name="cubeStartAngle" format="float" />
-        <attr name="cubeMinRate" format="float" />
-        <attr name="cubeMax" format="integer" />
-        <attr name="cubeProgress" format="integer" />
-    </declare-styleable>
-
 </resources>
