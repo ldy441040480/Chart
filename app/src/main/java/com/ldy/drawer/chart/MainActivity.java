@@ -50,9 +50,9 @@ public class MainActivity extends Activity {
 
     private ArrayList<EvaluationAnalyseInfo> getAnalyzeList() {
         ArrayList<EvaluationAnalyseInfo> list = new ArrayList<>();
-        for (int i = 0; i < 8; i ++) {
+        for (int i = 0; i < 4; i ++) {
             EvaluationAnalyseInfo analyzeInfo = new EvaluationAnalyseInfo();
-            analyzeInfo.setValue("关系技能爱能爱");
+            analyzeInfo.setValue("关系技能爱" + i);
             analyzeInfo.setRate(0.8f - (0.05f * i));
             list.add(analyzeInfo);
         }

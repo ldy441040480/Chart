@@ -312,7 +312,8 @@ public class EvaluationAnalyseView extends View {
         String rate = (int) (analyzeInfo.getRate() * 100) + "%";
         if (value != null && value.length() > 0) {
             float valueWidth = mTextPaint.measureText(value);
-            int curMaxWidth = mTextValueMaxWidth + (mRightSize - index - 1) * mArcPathWidth;
+            int maxCount = Math.max(ARC_MAX_COUNT / 2, mRightSize);
+            int curMaxWidth = mTextValueMaxWidth + (maxCount - index - 1) * mArcPathWidth;
             if (valueWidth > curMaxWidth) {
                 int subIndex = mTextPaint.breakText(value, 0, value.length(), true, curMaxWidth, null);
                 value = value.substring(0, subIndex - 1) + "...";
@@ -347,7 +348,8 @@ public class EvaluationAnalyseView extends View {
                     mTextPaint);
 
             float valueWidth = mTextPaint.measureText(value);
-            int curMaxWidth = mTextValueMaxWidth + 2 * mPointPaddingLeft + (mLeftSize - index - 1) * mArcPathWidth;
+            int maxCount = Math.max(ARC_MAX_COUNT / 2, mLeftSize);
+            int curMaxWidth = mTextValueMaxWidth + 2 * mPointPaddingLeft + (maxCount - index - 1) * mArcPathWidth;
             if (valueWidth > curMaxWidth) {
                 int subIndex = mTextPaint.breakText(value, 0, value.length(), true, curMaxWidth, null);
                 value = value.substring(0, subIndex - 1) + "...";
