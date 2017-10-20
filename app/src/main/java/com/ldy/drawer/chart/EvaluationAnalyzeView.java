@@ -17,7 +17,7 @@ import java.util.ArrayList;
 /**
  * Created by lidongyang on 2017/10/19.
  */
-public class ArcAnalyzeView extends View {
+public class EvaluationAnalyzeView extends View {
 
     private static final int ARC_MAX_COUNT = 8;
     private static final int ARC_PATH_COLOR = 0XFF00C1D5;
@@ -25,12 +25,24 @@ public class ArcAnalyzeView extends View {
     private static final int ARC_PADDING_RIGHT = 43;
     private static final int ARC_PATH_WIDTH = 10;
     private static final int ARC_PATH_PADDING = 4;
+    private static final float ARC_MIN_RATE = 0.02f;
 
     private static final int TEXT_SIZE = 14;
-    private static final int TEXT_NAME_COLOR = 0XFFAAAAAA;
+    private static final int TEXT_VALUE_MAX_WIDTH = 78;
+    private static final int TEXT_VALUE_COLOR = 0XFFAAAAAA;
+    private static final int TEXT_RATE_COLOR = 0XFF00C1D5;
+    private static final int TEXT_PADDING = 5;
 
-    private static final int LINE_COLOR = 0XFF979797;
     private static final float LINE_WIDTH = 0.5f;
+    private static final int LINE_COLOR = 0XFF979797;
+    private static final int LINE_TOP_MIN_LENGTH = 10;
+    private static final int LINE_TOP_MIN_RADIUS = 4;
+    private static final int LINE_BOTTOM_RADIUS = 10;
+    private static final int LINE_BOTTOM_GAP = 40;
+    private static final int LINE_BOTTOM_LENGTH = 90;
+    private static final int LINE_BOTTOM_PADDING = 20;
+    private static final int LINE_RIGHT_TOP_PADDING = 25;
+    private static final int LINE_LEFT_TOP_PADDING = 35;
 
     private static final int POINT_COLOR = 0XFFFFFFFF;
     private static final int POINT_RADIUS = 2;
@@ -61,29 +73,32 @@ public class ArcAnalyzeView extends View {
     private int mLineRightTopPadding;
 
     private int mTextSize;
+    private int mTextPadding;
+    private int mTextValueMaxWidth;
 
-    private ArrayList<AnalyzeInfo> mAnalyzeInfoList;
+    private ArrayList<EvaluationAnalyzeInfo> mAnalyzeInfoList;
     private ArrayList<Point> mPointList;
     private ArrayList<RectF> mArcRectFList;
 
     private Paint mArcPaint;
     private Paint mPointPaint;
     private Paint mLinePaint;
-    private Paint mNamePaint;
+    private Paint mTextPaint;
 
     private Path mLinePath;
     private RectF mLineRectF;
-    private Rect mNameBound;
+    private Rect mTextRateBound;
+    private Rect mTextValueBound;
 
-    public ArcAnalyzeView(Context context) {
+    public EvaluationAnalyzeView(Context context) {
         this(context, null);
     }
 
-    public ArcAnalyzeView(Context context, @Nullable AttributeSet attrs) {
+    public EvaluationAnalyzeView(Context context, @Nullable AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public ArcAnalyzeView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    public EvaluationAnalyzeView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
 
         mWidth = context.getResources().getDisplayMetrics().widthPixels;
@@ -97,16 +112,18 @@ public class ArcAnalyzeView extends View {
         mPointPaddingLeft = dip2px(POINT_PADDING_LEFT);
 
         mLinePaintWidth = dip2px(LINE_WIDTH);
-        mLineTopMinLength = dip2px(10);
-        mLineTopMinRadius = dip2px(4);
-        mLineBottomRadius = dip2px(10);
-        mLineBottomGap = dip2px(40);
-        mLineBottomLength = dip2px(90);
-        mLineBottomPadding = dip2px(20);
-        mLineRightTopPadding = dip2px(25);
-        mLineLeftTopPadding = dip2px(35);
+        mLineTopMinLength = dip2px(LINE_TOP_MIN_LENGTH);
+        mLineTopMinRadius = dip2px(LINE_TOP_MIN_RADIUS);
+        mLineBottomRadius = dip2px(LINE_BOTTOM_RADIUS);
+        mLineBottomGap = dip2px(LINE_BOTTOM_GAP);
+        mLineBottomLength = dip2px(LINE_BOTTOM_LENGTH);
+        mLineBottomPadding = dip2px(LINE_BOTTOM_PADDING);
+        mLineRightTopPadding = dip2px(LINE_RIGHT_TOP_PADDING);
+        mLineLeftTopPadding = dip2px(LINE_LEFT_TOP_PADDING);
 
-        mTextSize = dip2px(14);
+        mTextSize = dip2px(TEXT_SIZE);
+        mTextPadding = dip2px(TEXT_PADDING);
+        mTextValueMaxWidth = dip2px(TEXT_VALUE_MAX_WIDTH);
 
         initVariable();
     }
@@ -132,59 +149,55 @@ public class ArcAnalyzeView extends View {
         mLinePaint.setColor(LINE_COLOR);
         mLinePaint.setStrokeWidth(mLinePaintWidth);
 
-        mNamePaint = new Paint();
-        mNamePaint.setAntiAlias(true);
-        mNamePaint.setTextSize(mTextSize);
+        mTextPaint = new Paint();
+        mTextPaint.setAntiAlias(true);
+        mTextPaint.setTextSize(mTextSize);
 
         mLinePath = new Path();
         mLineRectF = new RectF();
-        mNameBound = new Rect();
+        mTextRateBound = new Rect();
+        mTextValueBound = new Rect();
 
         mArcRectFList = new ArrayList<>();
         mPointList = new ArrayList<>();
     }
 
-    public void setAnalyzeList(ArrayList<AnalyzeInfo> list) {
+    public void setAnalyzeList(ArrayList<EvaluationAnalyzeInfo> list) {
         if (list != null && !list.isEmpty()) {
             this.mAnalyzeInfoList = list;
-            resetValidate();
+            mArcRectFList.clear();
+            mPointList.clear();
+
+            mSize = Math.min(ARC_MAX_COUNT, mAnalyzeInfoList.size());
+            mRightSize = (int) Math.ceil(mSize / 2f);
+            mLeftSize = mSize - mRightSize;
+
+            int maxWidth = mWidth - mArcPaddingLeft - mArcPaddingRight;
+            int diffWidth = (int) ((mArcPathWidth + mArcPathPadding) * ARC_MAX_COUNT / (float) mSize);
+            mArcMaxRadius = (maxWidth - diffWidth) / 2;
+
+            int arcCenterX = mWidth / 2;
+            int arcCenterY = mArcMaxRadius + mArcPathWidth / 2;
+
+            for (int i = 0; i < mSize; i++) {
+                int offset = i * (mArcPathWidth + mArcPathPadding);
+
+                RectF rectF = new RectF();
+                int left = arcCenterX - mArcMaxRadius + offset;
+                int top = arcCenterY - mArcMaxRadius + offset;
+                int right = arcCenterX + mArcMaxRadius - offset;
+                int bottom = arcCenterY + mArcMaxRadius - offset;
+                rectF.set(left, top, right, bottom);
+                mArcRectFList.add(rectF);
+
+                Point point = new Point();
+                point.x = arcCenterX + mPointPaddingLeft;
+                point.y = bottom;
+                mPointList.add(point);
+            }
+            requestLayout();
         }
     }
-
-    private void resetValidate() {
-        mArcRectFList.clear();
-        mPointList.clear();
-
-        mSize = Math.min(ARC_MAX_COUNT, mAnalyzeInfoList.size());
-        mRightSize = (int) Math.ceil(mSize / 2f);
-        mLeftSize = mSize - mRightSize;
-
-        int maxWidth = mWidth - mArcPaddingLeft - mArcPaddingRight;
-        int diffWidth = (int) ((mArcPathWidth + mArcPathPadding) * ARC_MAX_COUNT / (float) mSize);
-        mArcMaxRadius = (maxWidth - diffWidth) / 2;
-
-        int arcCenterX = mWidth / 2;
-        int arcCenterY = mArcMaxRadius + mArcPathWidth / 2;
-
-        for (int i = 0; i < mSize; i++) {
-            int offset = i * (mArcPathWidth + mArcPathPadding);
-
-            RectF rectF = new RectF();
-            int left = arcCenterX - mArcMaxRadius + offset;
-            int top = arcCenterY - mArcMaxRadius + offset;
-            int right = arcCenterX + mArcMaxRadius - offset;
-            int bottom = arcCenterY + mArcMaxRadius - offset;
-            rectF.set(left, top, right, bottom);
-            mArcRectFList.add(rectF);
-
-            Point point = new Point();
-            point.x = arcCenterX + mPointPaddingLeft;
-            point.y = bottom;
-            mPointList.add(point);
-        }
-        requestLayout();
-    }
-
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
@@ -211,11 +224,11 @@ public class ArcAnalyzeView extends View {
             return;
         }
         for (int i = 0; i < mSize; i++) {
-            AnalyzeInfo analyzeInfo = mAnalyzeInfoList.get(i);
+            EvaluationAnalyzeInfo analyzeInfo = mAnalyzeInfoList.get(i);
             Point point = mPointList.get(i);
             RectF rectF = mArcRectFList.get(i);
 
-            float rate = analyzeInfo.rate;
+            float rate = analyzeInfo.getRate();
             float sweepAngle = getSweepAngle(rate);
 
             canvas.drawArc(rectF, 90 - sweepAngle, sweepAngle, false, mArcPaint);
@@ -228,7 +241,7 @@ public class ArcAnalyzeView extends View {
         }
     }
 
-    private void drawRightLine(Canvas canvas, Point point, int index, AnalyzeInfo analyzeInfo) {
+    private void drawRightLine(Canvas canvas, Point point, int index, EvaluationAnalyzeInfo analyzeInfo) {
         mLinePath.reset();
         mLinePath.moveTo(point.x, point.y);
         int rightTopRadius = mLineTopMinRadius + mLineTopMinRadius * index;
@@ -264,7 +277,7 @@ public class ArcAnalyzeView extends View {
         drawRightText(canvas, rightBottomLeftX, rightVerticalBottomY, analyzeInfo);
     }
 
-    private void drawLeftLine(Canvas canvas, Point point, int index, AnalyzeInfo analyzeInfo) {
+    private void drawLeftLine(Canvas canvas, Point point, int index, EvaluationAnalyzeInfo analyzeInfo) {
         mLinePath.reset();
         mLinePath.moveTo(point.x, point.y);
         int leftTopRadius = mLineTopMinRadius + mLineTopMinRadius * index;
@@ -276,8 +289,8 @@ public class ArcAnalyzeView extends View {
         int leftVerticalBottomY = mArcMaxRadius * 2 + mLineLeftTopPadding + (mLeftSize - index - 1) * mLineBottomGap;
 
         int leftBottomY = leftVerticalBottomY + mLineBottomRadius;
-        int leftBottomLeftX = leftVerticalX - mLineBottomRadius;
-        int leftBottomRightX = leftBottomLeftX - mLineBottomLength;
+        int leftBottomRightX = leftVerticalX - mLineBottomRadius;
+        int leftBottomLeftX = leftBottomRightX - mLineBottomLength;
 
         mLinePath.lineTo(leftTopHorizontalX, point.y);
         mLineRectF.set(
@@ -294,49 +307,72 @@ public class ArcAnalyzeView extends View {
                 leftVerticalX,
                 leftVerticalBottomY + mLineBottomRadius);
         mLinePath.addArc(mLineRectF, 0, 90);
-        mLinePath.moveTo(leftBottomLeftX, leftBottomY);
-        mLinePath.lineTo(leftBottomRightX, leftBottomY);
+        mLinePath.moveTo(leftBottomRightX, leftBottomY);
+        mLinePath.lineTo(leftBottomLeftX, leftBottomY);
         canvas.drawPath(mLinePath, mLinePaint);
+        drawLeftText(canvas, leftBottomRightX, leftVerticalBottomY, analyzeInfo);
     }
 
-    private void drawRightText(Canvas canvas, float startX, float startY, AnalyzeInfo analyzeInfo) {
+    private void drawRightText(Canvas canvas, float startX, float startY, EvaluationAnalyzeInfo analyzeInfo) {
+        String value = analyzeInfo.getValue();
+        String rate = (int) (analyzeInfo.getRate() * 100) + "%";
+        if (value != null && value.length() > 0) {
+            float valueWidth = mTextPaint.measureText(value);
+            if (valueWidth > mTextValueMaxWidth) {
+                int subIndex = mTextPaint.breakText(value, 0, value.length(), true, mTextValueMaxWidth, null);
+                value = value.substring(0, subIndex - 3) + "...";
+            }
+            mTextPaint.getTextBounds(value, 0, value.length(), mTextValueBound);
+            mTextPaint.setColor(TEXT_VALUE_COLOR);
+            canvas.drawText(
+                    value,
+                    startX,
+                    startY,
+                    mTextPaint);
 
-        String value = analyzeInfo.name;
-        mNamePaint.setColor(TEXT_NAME_COLOR);
-        mNamePaint.getTextBounds(value, 0, value.length(), mNameBound);
-        canvas.drawText(
-                value,
-                startX,
-                startY,
-                mNamePaint);
-
-
+            mTextPaint.setColor(TEXT_RATE_COLOR);
+            canvas.drawText(
+                    rate,
+                    startX + mTextValueBound.width() + mTextPadding,
+                    startY,
+                    mTextPaint);
+        }
     }
 
-    private void drawLeftText(Canvas canvas, Point point, int index, AnalyzeInfo analyzeInfo) {
+    private void drawLeftText(Canvas canvas, float startX, float startY, EvaluationAnalyzeInfo analyzeInfo) {
+        String value = analyzeInfo.getValue();
+        String rate = (int) (analyzeInfo.getRate() * 100) + "%";
+        if (value != null && value.length() > 0) {
+            mTextPaint.getTextBounds(rate, 0, rate.length(), mTextRateBound);
+            mTextPaint.setColor(TEXT_RATE_COLOR);
+            canvas.drawText(
+                    rate,
+                    startX - mTextRateBound.width(),
+                    startY,
+                    mTextPaint);
+
+            float valueWidth = mTextPaint.measureText(value);
+            if (valueWidth > mTextValueMaxWidth) {
+                int subIndex = mTextPaint.breakText(value, 0, value.length(), true, mTextValueMaxWidth, null);
+                value = value.substring(0, subIndex - 3) + "...";
+            }
+            mTextPaint.getTextBounds(value, 0, value.length(), mTextValueBound);
+            mTextPaint.setColor(TEXT_VALUE_COLOR);
+            canvas.drawText(
+                    value,
+                    startX - mTextRateBound.width() - mTextPadding - mTextValueBound.width(),
+                    startY,
+                    mTextPaint);
+        }
     }
 
-    private float getSweepAngle(float progress) {
-        return progress * 360f;
+    private float getSweepAngle(float rate) {
+        return rate < ARC_MIN_RATE ? ARC_MIN_RATE * 360f : rate * 360f;
     }
 
     private int dip2px(float size) {
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, size, getContext().getResources()
                 .getDisplayMetrics());
-    }
-
-    public static class AnalyzeInfo {
-
-        public String name;
-        public float rate;
-
-        public AnalyzeInfo() {
-        }
-
-        public AnalyzeInfo(String name, float rate) {
-            this.name = name;
-            this.rate = rate;
-        }
     }
 
 }

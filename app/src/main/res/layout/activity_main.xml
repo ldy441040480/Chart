@@ -14,7 +14,7 @@
         <!--android:layout_height="200dp"-->
         <!--android:layout_marginTop="20dp"/>-->
 
-    <com.ldy.drawer.chart.ArcAnalyzeView
+    <com.ldy.drawer.chart.EvaluationAnalyzeView
         android:id="@+id/arc_analyze_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
