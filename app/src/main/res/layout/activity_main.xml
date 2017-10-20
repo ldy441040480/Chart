@@ -9,10 +9,17 @@
     <!--android:layout_height="wrap_content"-->
     <!--android:orientation="vertical"/>-->
 
-    <com.ldy.drawer.chart.TestView
+    <!--<com.ldy.drawer.chart.TestView-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="200dp"-->
+        <!--android:layout_marginTop="20dp"/>-->
+
+    <com.ldy.drawer.chart.ArcAnalyzeView
+        android:id="@+id/arc_analyze_view"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:layout_marginTop="20dp"/>
+        android:layout_height="wrap_content"
+        android:background="#eeeeee"/>
+
     <!--<com.ldy.drawer.chart.ArcHeaderView-->
         <!--xmlns:arcHeader="http://schemas.android.com/apk/res-auto"-->
         <!--android:id="@+id/arc_header_view"-->
@@ -40,18 +47,17 @@
             android:layout_height="90dp"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="20dp"
-            cube:arcInnerColor="#a21c00"
-            cube:arcOuterColor="#99ce7f7f"
+            cube:arcInnerColor="#ef4123"
+            cube:arcOuterColor="#f7a091"
             cube:cubeMax="100"
             cube:cubeMinRate="0.05"
             cube:cubeOvalColor="#ff816b"
             cube:cubeOvalHeight="6dp"
             cube:cubePathWidth="21dp"
-            cube:cubeStartAngle="135"
             cube:cubeTextColor="#ef4123"
             cube:cubeTextSize="16sp"
-            cube:pathInnerColor="#ef4123"
-            cube:pathOuterColor="#f7a091"/>
+            cube:pathInnerColor="#a21c00"
+            cube:pathOuterColor="#99ce7f7f"/>
 
         <com.ldy.drawer.chart.CubeProgressView
             xmlns:cube="http://schemas.android.com/apk/res-auto"
@@ -61,19 +67,18 @@
             android:layout_alignParentRight="true"
             android:layout_marginRight="20dp"
             android:layout_marginTop="20dp"
-            cube:arcInnerColor="#00c1d5"
-            cube:arcOuterColor="#996bdbe6"
+            cube:arcInnerColor="#0078c8"
+            cube:arcOuterColor="#7fbbe3"
             cube:cubeMax="100"
             cube:cubeMinRate="0.05"
             cube:cubeOvalColor="#62a7d5"
             cube:cubeOvalHeight="6dp"
             cube:cubePathWidth="21dp"
             cube:cubeRadius="45dp"
-            cube:cubeStartAngle="135"
             cube:cubeTextColor="#0078c8"
             cube:cubeTextSize="16sp"
-            cube:pathInnerColor="#0078c8"
-            cube:pathOuterColor="#7fbbe3"/>
+            cube:pathInnerColor="#00c1d5"
+            cube:pathOuterColor="#996bdbe6"/>
 
     </RelativeLayout>
 

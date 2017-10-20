@@ -19,22 +19,22 @@ import android.view.animation.Transformation;
  */
 public class CubeProgressView extends View {
 
-    private static final int   PATH_INNER_COLOR   = 0xFF00C1D5;
-    private static final int   PATH_OUTER_COLOR   = 0xFF7EE0EA;
-    private static final int   ARC_INNER_COLOR    = 0XFF4666DB;
-    private static final int   ARC_OUTER_COLOR    = 0xFF6BB1DF;
-    private static final int   CUBE_OVAL_COLOR    = 0XFF74EFFF;
-    private static final int   CUBE_TEXT_COLOR    = 0XFF00C1D5;
+    private static final int PATH_INNER_COLOR = 0XFF4666DB;
+    private static final int PATH_OUTER_COLOR = 0xFF6BB1DF;
+    private static final int ARC_INNER_COLOR = 0xFF00C1D5;
+    private static final int ARC_OUTER_COLOR = 0xFF7EE0EA;
+    private static final int CUBE_OVAL_COLOR = 0XFF74EFFF;
+    private static final int CUBE_TEXT_COLOR = 0XFF00C1D5;
 
-    private static final float CUBE_CIRCLE_ANGLE  = 360f;
-    private static final float CUBE_PATH_WIDTH    = 21f;
-    private static final float CUBE_TEXT_SIZE     = 16f;
-    private static final float CUBE_OVAL_HEIGHT   = 6f;
-    private static final float CUBE_START_ANGLE   = 135f;
-    private static final float CUBE_MIN_RATE      = 0.05f;
-    private static final int   CUBE_MAX           = 100;
-    private static final int   CUBE_PROGRESS      = 0;
-    private static final long  CUBE_ANIM_DURATION = 500L;
+    private static final float CUBE_CIRCLE_ANGLE = 360f;
+    private static final float CUBE_PATH_WIDTH = 21f;
+    private static final float CUBE_TEXT_SIZE = 16f;
+    private static final float CUBE_OVAL_HEIGHT = 6f;
+    private static final float CUBE_START_ANGLE = 90f;
+    private static final float CUBE_MIN_RATE = 0.05f;
+    private static final int CUBE_MAX = 100;
+    private static final int CUBE_PROGRESS = 0;
+    private static final long CUBE_ANIM_DURATION = 500L;
 
     private Paint mCubePaint;
     private Paint mCubeOvalPaint;
@@ -238,7 +238,7 @@ public class CubeProgressView extends View {
                 mCenterY - mCubeRadius + mCubePathWidth * 3 / 4,
                 mCenterX + mCubeRadius - mCubePathWidth * 3 / 4,
                 mCenterY + mCubeRadius - mCubePathWidth * 3 / 4);
-        canvas.drawArc(mArcPath, mCubeStartAngle, sweepAngle, false, mCubePaint);
+        canvas.drawArc(mArcPath, mCubeStartAngle - sweepAngle, sweepAngle, false, mCubePaint);
 
         mCubePaint.setColor(mArcOuterColor);
         mArcPath.set(
@@ -246,18 +246,18 @@ public class CubeProgressView extends View {
                 mCenterY - mCubeRadius + mCubePathWidth / 4,
                 mCenterX + mCubeRadius - mCubePathWidth / 4,
                 mCenterY + mCubeRadius - mCubePathWidth / 4);
-        canvas.drawArc(mArcPath, mCubeStartAngle, sweepAngle, false, mCubePaint);
+        canvas.drawArc(mArcPath, mCubeStartAngle - sweepAngle, sweepAngle, false, mCubePaint);
     }
 
     private void drawCubeOval(Canvas canvas, float sweepAngle) {
-        canvas.rotate(sweepAngle + mCubeStartAngle, mCenterX, mCenterY);
+        canvas.rotate(mCubeStartAngle - sweepAngle, mCenterX, mCenterY);
         mOvalPath.set(
                 mCenterX + mCubeRadius - mCubePathWidth,
                 mCenterY - mCubeOvalHeight / 2,
                 mCenterX + mCubeRadius,
                 mCenterY + mCubeOvalHeight / 2);
         canvas.drawOval(mOvalPath, mCubeOvalPaint);
-        canvas.rotate(-sweepAngle - mCubeStartAngle, mCenterX, mCenterY);
+        canvas.rotate(-mCubeStartAngle + sweepAngle, mCenterX, mCenterY);
 
         canvas.rotate(mCubeStartAngle, mCenterX, mCenterY);
         mOvalPath.set(

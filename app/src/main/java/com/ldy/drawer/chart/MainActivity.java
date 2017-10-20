@@ -43,6 +43,20 @@ public class MainActivity extends Activity {
 
         CubeProgressView progressBar3 = (CubeProgressView) findViewById(R.id.cube_progress_bar_3);
         progressBar3.setCubeProgress(1);
+
+        ArcAnalyzeView analyzeView = (ArcAnalyzeView) findViewById(R.id.arc_analyze_view);
+        analyzeView.setAnalyzeList(getAnalyzeList());
+    }
+
+    private ArrayList<ArcAnalyzeView.AnalyzeInfo> getAnalyzeList() {
+        ArrayList<ArcAnalyzeView.AnalyzeInfo> list = new ArrayList<>();
+        for (int i = 0; i < 8; i ++) {
+            ArcAnalyzeView.AnalyzeInfo analyzeInfo = new ArcAnalyzeView.AnalyzeInfo();
+            analyzeInfo.name = "李东洋" + i;
+            analyzeInfo.rate = 0.8f - (0.05f * i);
+            list.add(analyzeInfo);
+        }
+        return list;
     }
 
     private void addChartView() {
@@ -51,6 +65,7 @@ public class MainActivity extends Activity {
         view.setList(getList());
         mLayout.addView(view);
     }
+
     private ArrayList<Bean> getList() {
         ArrayList<Bean> list = new ArrayList<Bean>();
         for (int i = 0; i < 8; i ++) {
@@ -61,4 +76,5 @@ public class MainActivity extends Activity {
         }
         return list;
     }
+
 }
