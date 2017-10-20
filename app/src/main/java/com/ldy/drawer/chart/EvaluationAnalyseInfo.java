@@ -3,15 +3,15 @@ package com.ldy.drawer.chart;
 /**
  * Created by lidongyang on 2017/10/20.
  */
-public class EvaluationAnalyzeInfo {
+public class EvaluationAnalyseInfo {
 
     private String value;
     private float rate;
 
-    public EvaluationAnalyzeInfo() {
+    public EvaluationAnalyseInfo() {
     }
 
-    public EvaluationAnalyzeInfo(String value, float rate) {
+    public EvaluationAnalyseInfo(String value, float rate) {
         this.value = value;
         this.rate = rate;
     }

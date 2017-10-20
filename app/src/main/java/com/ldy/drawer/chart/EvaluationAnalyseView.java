@@ -17,7 +17,7 @@ import java.util.ArrayList;
 /**
  * Created by lidongyang on 2017/10/19.
  */
-public class EvaluationAnalyzeView extends View {
+public class EvaluationAnalyseView extends View {
 
     private static final int ARC_MAX_COUNT = 8;
     private static final int ARC_PATH_COLOR = 0XFF00C1D5;
@@ -76,7 +76,7 @@ public class EvaluationAnalyzeView extends View {
     private int mTextPadding;
     private int mTextValueMaxWidth;
 
-    private ArrayList<EvaluationAnalyzeInfo> mAnalyzeInfoList;
+    private ArrayList<EvaluationAnalyseInfo> mAnalyzeInfoList;
     private ArrayList<Point> mPointList;
     private ArrayList<RectF> mArcRectFList;
 
@@ -90,15 +90,15 @@ public class EvaluationAnalyzeView extends View {
     private Rect mTextRateBound;
     private Rect mTextValueBound;
 
-    public EvaluationAnalyzeView(Context context) {
+    public EvaluationAnalyseView(Context context) {
         this(context, null);
     }
 
-    public EvaluationAnalyzeView(Context context, @Nullable AttributeSet attrs) {
+    public EvaluationAnalyseView(Context context, @Nullable AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public EvaluationAnalyzeView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    public EvaluationAnalyseView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
 
         mWidth = context.getResources().getDisplayMetrics().widthPixels;
@@ -162,7 +162,7 @@ public class EvaluationAnalyzeView extends View {
         mPointList = new ArrayList<>();
     }
 
-    public void setAnalyzeList(ArrayList<EvaluationAnalyzeInfo> list) {
+    public void setAnalyzeList(ArrayList<EvaluationAnalyseInfo> list) {
         if (list != null && !list.isEmpty()) {
             this.mAnalyzeInfoList = list;
             mArcRectFList.clear();
@@ -224,7 +224,7 @@ public class EvaluationAnalyzeView extends View {
             return;
         }
         for (int i = 0; i < mSize; i++) {
-            EvaluationAnalyzeInfo analyzeInfo = mAnalyzeInfoList.get(i);
+            EvaluationAnalyseInfo analyzeInfo = mAnalyzeInfoList.get(i);
             Point point = mPointList.get(i);
             RectF rectF = mArcRectFList.get(i);
 
@@ -241,7 +241,7 @@ public class EvaluationAnalyzeView extends View {
         }
     }
 
-    private void drawRightLine(Canvas canvas, Point point, int index, EvaluationAnalyzeInfo analyzeInfo) {
+    private void drawRightLine(Canvas canvas, Point point, int index, EvaluationAnalyseInfo analyzeInfo) {
         mLinePath.reset();
         mLinePath.moveTo(point.x, point.y);
         int rightTopRadius = mLineTopMinRadius + mLineTopMinRadius * index;
@@ -277,7 +277,7 @@ public class EvaluationAnalyzeView extends View {
         drawRightText(canvas, rightBottomLeftX, rightVerticalBottomY, analyzeInfo);
     }
 
-    private void drawLeftLine(Canvas canvas, Point point, int index, EvaluationAnalyzeInfo analyzeInfo) {
+    private void drawLeftLine(Canvas canvas, Point point, int index, EvaluationAnalyseInfo analyzeInfo) {
         mLinePath.reset();
         mLinePath.moveTo(point.x, point.y);
         int leftTopRadius = mLineTopMinRadius + mLineTopMinRadius * index;
@@ -313,7 +313,7 @@ public class EvaluationAnalyzeView extends View {
         drawLeftText(canvas, leftBottomRightX, leftVerticalBottomY, analyzeInfo);
     }
 
-    private void drawRightText(Canvas canvas, float startX, float startY, EvaluationAnalyzeInfo analyzeInfo) {
+    private void drawRightText(Canvas canvas, float startX, float startY, EvaluationAnalyseInfo analyzeInfo) {
         String value = analyzeInfo.getValue();
         String rate = (int) (analyzeInfo.getRate() * 100) + "%";
         if (value != null && value.length() > 0) {
@@ -339,7 +339,7 @@ public class EvaluationAnalyzeView extends View {
         }
     }
 
-    private void drawLeftText(Canvas canvas, float startX, float startY, EvaluationAnalyzeInfo analyzeInfo) {
+    private void drawLeftText(Canvas canvas, float startX, float startY, EvaluationAnalyseInfo analyzeInfo) {
         String value = analyzeInfo.getValue();
         String rate = (int) (analyzeInfo.getRate() * 100) + "%";
         if (value != null && value.length() > 0) {

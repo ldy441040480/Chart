@@ -44,14 +44,14 @@ public class MainActivity extends Activity {
         CubeProgressView progressBar3 = (CubeProgressView) findViewById(R.id.cube_progress_bar_3);
         progressBar3.setCubeProgress(1);
 
-        EvaluationAnalyzeView analyzeView = (EvaluationAnalyzeView) findViewById(R.id.arc_analyze_view);
+        EvaluationAnalyseView analyzeView = (EvaluationAnalyseView) findViewById(R.id.arc_analyze_view);
         analyzeView.setAnalyzeList(getAnalyzeList());
     }
 
-    private ArrayList<EvaluationAnalyzeInfo> getAnalyzeList() {
-        ArrayList<EvaluationAnalyzeInfo> list = new ArrayList<>();
+    private ArrayList<EvaluationAnalyseInfo> getAnalyzeList() {
+        ArrayList<EvaluationAnalyseInfo> list = new ArrayList<>();
         for (int i = 0; i < 8; i ++) {
-            EvaluationAnalyzeInfo analyzeInfo = new EvaluationAnalyzeInfo();
+            EvaluationAnalyseInfo analyzeInfo = new EvaluationAnalyseInfo();
             analyzeInfo.setValue("关系技能" + i);
             analyzeInfo.setRate(0.8f - (0.05f * i));
             list.add(analyzeInfo);
