@@ -52,7 +52,7 @@ public class MainActivity extends Activity {
         ArrayList<EvaluationAnalyseInfo> list = new ArrayList<>();
         for (int i = 0; i < 8; i ++) {
             EvaluationAnalyseInfo analyzeInfo = new EvaluationAnalyseInfo();
-            analyzeInfo.setValue("关系技能" + i);
+            analyzeInfo.setValue("关系技能爱能爱");
             analyzeInfo.setRate(0.8f - (0.05f * i));
             list.add(analyzeInfo);
         }
