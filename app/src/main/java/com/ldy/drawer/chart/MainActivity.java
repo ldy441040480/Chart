@@ -44,13 +44,27 @@ public class MainActivity extends Activity {
         CubeProgressView progressBar3 = (CubeProgressView) findViewById(R.id.cube_progress_bar_3);
         progressBar3.setCubeProgress(1);
 
-        EvaluationAnalyseView analyzeView = (EvaluationAnalyseView) findViewById(R.id.arc_analyze_view);
-        analyzeView.setAnalyzeList(getAnalyzeList());
+        EvaluationAnalyseView analyzeView1 = (EvaluationAnalyseView) findViewById(R.id.arc_analyze_view1);
+        analyzeView1.setAnalyzeList(getAnalyzeList(8));
+        EvaluationAnalyseView analyzeView2 = (EvaluationAnalyseView) findViewById(R.id.arc_analyze_view2);
+        analyzeView2.setAnalyzeList(getAnalyzeList(7));
+        EvaluationAnalyseView analyzeView3 = (EvaluationAnalyseView) findViewById(R.id.arc_analyze_view3);
+        analyzeView3.setAnalyzeList(getAnalyzeList(6));
+        EvaluationAnalyseView analyzeView4 = (EvaluationAnalyseView) findViewById(R.id.arc_analyze_view4);
+        analyzeView4.setAnalyzeList(getAnalyzeList(5));
+        EvaluationAnalyseView analyzeView5 = (EvaluationAnalyseView) findViewById(R.id.arc_analyze_view5);
+        analyzeView5.setAnalyzeList(getAnalyzeList(4));
+        EvaluationAnalyseView analyzeView6 = (EvaluationAnalyseView) findViewById(R.id.arc_analyze_view6);
+        analyzeView6.setAnalyzeList(getAnalyzeList(3));
+        EvaluationAnalyseView analyzeView7 = (EvaluationAnalyseView) findViewById(R.id.arc_analyze_view7);
+        analyzeView7.setAnalyzeList(getAnalyzeList(2));
+        EvaluationAnalyseView analyzeView8 = (EvaluationAnalyseView) findViewById(R.id.arc_analyze_view8);
+        analyzeView8.setAnalyzeList(getAnalyzeList(1));
     }
 
-    private ArrayList<EvaluationAnalyseInfo> getAnalyzeList() {
+    private ArrayList<EvaluationAnalyseInfo> getAnalyzeList(int count) {
         ArrayList<EvaluationAnalyseInfo> list = new ArrayList<>();
-        for (int i = 0; i < 4; i ++) {
+        for (int i = 0; i < count; i ++) {
             EvaluationAnalyseInfo analyzeInfo = new EvaluationAnalyseInfo();
             analyzeInfo.setValue("关系技能爱" + i);
             analyzeInfo.setRate(0.8f - (0.05f * i));
