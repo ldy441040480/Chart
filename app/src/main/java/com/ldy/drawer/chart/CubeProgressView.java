@@ -9,7 +9,6 @@ import android.graphics.RectF;
 import android.support.annotation.ColorInt;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
-import android.util.TypedValue;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.Transformation;
@@ -73,6 +72,7 @@ public class CubeProgressView extends View {
 
     public CubeProgressView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        final float density = getResources().getDisplayMetrics().density;
         TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.CubeProgressView);
         mPathInnerColor = array.getColor(R.styleable.CubeProgressView_pathInnerColor, PATH_INNER_COLOR);
         mPathOuterColor = array.getColor(R.styleable.CubeProgressView_pathOuterColor, PATH_OUTER_COLOR);
@@ -81,9 +81,9 @@ public class CubeProgressView extends View {
         mCubeOvalColor = array.getColor(R.styleable.CubeProgressView_cubeOvalColor, CUBE_OVAL_COLOR);
         mCubeTextColor = array.getColor(R.styleable.CubeProgressView_cubeTextColor, CUBE_TEXT_COLOR);
         mCubeStartAngle = array.getFloat(R.styleable.CubeProgressView_cubeStartAngle, CUBE_START_ANGLE);
-        mCubePathWidth = array.getDimension(R.styleable.CubeProgressView_cubePathWidth, dip2px(CUBE_PATH_WIDTH));
-        mCubeTextSize = array.getDimension(R.styleable.CubeProgressView_cubeTextSize, dip2px(CUBE_TEXT_SIZE));
-        mCubeOvalHeight = array.getDimension(R.styleable.CubeProgressView_cubeOvalHeight, dip2px(CUBE_OVAL_HEIGHT));
+        mCubePathWidth = array.getDimension(R.styleable.CubeProgressView_cubePathWidth, (int) (CUBE_PATH_WIDTH * density));
+        mCubeTextSize = array.getDimension(R.styleable.CubeProgressView_cubeTextSize, (int) (CUBE_TEXT_SIZE * density));
+        mCubeOvalHeight = array.getDimension(R.styleable.CubeProgressView_cubeOvalHeight, (int) (CUBE_OVAL_HEIGHT * density));
         mCubeMax = array.getInt(R.styleable.CubeProgressView_cubeMax, CUBE_MAX);
         mCubeProgress = array.getInt(R.styleable.CubeProgressView_cubeProgress, CUBE_PROGRESS);
         mCubeMinRate = array.getFloat(R.styleable.CubeProgressView_cubeMinRate, CUBE_MIN_RATE);
@@ -216,11 +216,6 @@ public class CubeProgressView extends View {
     private float getSweepAngle(float realRate) {
         float showRate = (realRate != 0 && realRate < mCubeMinRate) ? mCubeMinRate : realRate;
         return showRate * CUBE_CIRCLE_ANGLE * mAnimationRate;
-    }
-
-    private int dip2px(float size) {
-        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, size, getContext().getResources()
-                .getDisplayMetrics());
     }
 
     private void drawCubePath(Canvas canvas) {

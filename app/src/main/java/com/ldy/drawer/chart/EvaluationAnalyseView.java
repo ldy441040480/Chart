@@ -9,7 +9,6 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
-import android.util.TypedValue;
 import android.view.View;
 
 import java.util.ArrayList;
@@ -102,30 +101,30 @@ public class EvaluationAnalyseView extends View {
 
     public EvaluationAnalyseView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        float density = getResources().getDisplayMetrics().density;
         mWidth = context.getResources().getDisplayMetrics().widthPixels;
+        mArcPathWidth = (int) (ARC_PATH_WIDTH * density);
+        mArcPaddingLeft = (int) (ARC_PADDING_LEFT * density);
+        mArcPaddingRight = (int) (ARC_PADDING_RIGHT * density);
+        mArcPathPadding = (int) (ARC_PATH_PADDING * density);
+        mArcDiffDistance = (int) (ARC_DIFF_DISTANCE * density);
 
-        mArcPathWidth = dip2px(ARC_PATH_WIDTH);
-        mArcPaddingLeft = dip2px(ARC_PADDING_LEFT);
-        mArcPaddingRight = dip2px(ARC_PADDING_RIGHT);
-        mArcPathPadding = dip2px(ARC_PATH_PADDING);
-        mArcDiffDistance = dip2px(ARC_DIFF_DISTANCE);
+        mLinePaintWidth =  (int) (LINE_WIDTH * density);
+        mLineTopMinLength = (int) (LINE_TOP_MIN_LENGTH * density);
+        mLineTopMinRadius = (int) (LINE_TOP_MIN_RADIUS * density);
+        mLineBottomRadius = (int) (LINE_BOTTOM_RADIUS * density);
+        mLineBottomGap = (int) (LINE_BOTTOM_GAP * density);
+        mLineBottomLength = (int) (LINE_BOTTOM_LENGTH * density);
+        mLineBottomPadding = (int) (LINE_BOTTOM_PADDING * density);
+        mLineRightTopPadding = (int) (LINE_RIGHT_TOP_PADDING * density);
+        mLineLeftTopPadding = (int) (LINE_LEFT_TOP_PADDING * density);
 
-        mLinePaintWidth = dip2px(LINE_WIDTH);
-        mLineTopMinLength = dip2px(LINE_TOP_MIN_LENGTH);
-        mLineTopMinRadius = dip2px(LINE_TOP_MIN_RADIUS);
-        mLineBottomRadius = dip2px(LINE_BOTTOM_RADIUS);
-        mLineBottomGap = dip2px(LINE_BOTTOM_GAP);
-        mLineBottomLength = dip2px(LINE_BOTTOM_LENGTH);
-        mLineBottomPadding = dip2px(LINE_BOTTOM_PADDING);
-        mLineRightTopPadding = dip2px(LINE_RIGHT_TOP_PADDING);
-        mLineLeftTopPadding = dip2px(LINE_LEFT_TOP_PADDING);
+        mPointRadius = (int) (POINT_RADIUS * density);
+        mPointPaddingLeft = (int) (POINT_PADDING_LEFT * density);
 
-        mPointRadius = dip2px(POINT_RADIUS);
-        mPointPaddingLeft = dip2px(POINT_PADDING_LEFT);
-
-        mTextSize = dip2px(TEXT_SIZE);
-        mTextPadding = dip2px(TEXT_PADDING);
-        mTextValueMaxWidth = dip2px(TEXT_VALUE_MAX_WIDTH);
+        mTextSize = (int) (TEXT_SIZE * density);
+        mTextPadding = (int) (TEXT_PADDING * density);
+        mTextValueMaxWidth = (int) (TEXT_VALUE_MAX_WIDTH * density);
 
         initVariable();
     }
@@ -231,7 +230,6 @@ public class EvaluationAnalyseView extends View {
             canvas.drawCircle(point.x, point.y, mPointRadius, mPointPaint);
         }
     }
-
 
     private void drawRightLine(Canvas canvas, Point point, int index, EvaluationAnalyseInfo analyzeInfo) {
         int rightTopRadius = mLineTopMinRadius + mLineTopMinRadius * index;
@@ -366,11 +364,6 @@ public class EvaluationAnalyseView extends View {
 
     private float getSweepAngle(float rate) {
         return rate < ARC_MIN_RATE ? ARC_MIN_RATE * 360f : rate * 360f;
-    }
-
-    private int dip2px(float size) {
-        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, size, getContext().getResources()
-                .getDisplayMetrics());
     }
 
     private boolean isInvalidAnalyse() {
