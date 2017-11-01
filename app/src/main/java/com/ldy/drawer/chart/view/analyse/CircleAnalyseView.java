@@ -1,4 +1,4 @@
-package com.ldy.drawer.chart;
+package com.ldy.drawer.chart.view.analyse;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -16,7 +16,7 @@ import java.util.ArrayList;
 /**
  * Created by lidongyang on 2017/10/19.
  */
-public class EvaluationAnalyseView extends View {
+public class CircleAnalyseView extends View {
 
     private static final int   ARC_MAX_COUNT           = 8;
     private static final int   ARC_PATH_COLOR          = 0XFF00C1D5;
@@ -77,7 +77,7 @@ public class EvaluationAnalyseView extends View {
     private int mTextPadding;
     private int mTextValueMaxWidth;
 
-    private ArrayList<EvaluationAnalyseInfo> mAnalyzeInfoList;
+    private ArrayList<CircleAnalyseInfo> mAnalyzeInfoList;
     private ArrayList<Point> mPointList;
     private ArrayList<RectF> mArcRectFList;
 
@@ -91,15 +91,15 @@ public class EvaluationAnalyseView extends View {
     private Rect mTextRateBound;
     private Rect mTextValueBound;
 
-    public EvaluationAnalyseView(Context context) {
+    public CircleAnalyseView(Context context) {
         this(context, null);
     }
 
-    public EvaluationAnalyseView(Context context, @Nullable AttributeSet attrs) {
+    public CircleAnalyseView(Context context, @Nullable AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public EvaluationAnalyseView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    public CircleAnalyseView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         float density = getResources().getDisplayMetrics().density;
         mWidth = context.getResources().getDisplayMetrics().widthPixels;
@@ -163,7 +163,7 @@ public class EvaluationAnalyseView extends View {
         mPointList = new ArrayList<>();
     }
 
-    public void setAnalyzeList(ArrayList<EvaluationAnalyseInfo> list) {
+    public void setAnalyzeList(ArrayList<CircleAnalyseInfo> list) {
         if (list != null && !list.isEmpty()) {
             int size = Math.min(ARC_MAX_COUNT, list.size());
             int diffWidth = (int) ((ARC_MAX_COUNT - size) * mArcDiffDistance * ARC_DIFF_RATE);
@@ -214,7 +214,7 @@ public class EvaluationAnalyseView extends View {
             return;
         }
         for (int i = 0; i < mAnalyzeInfoList.size(); i++) {
-            EvaluationAnalyseInfo analyzeInfo = mAnalyzeInfoList.get(i);
+            CircleAnalyseInfo analyzeInfo = mAnalyzeInfoList.get(i);
             Point point = mPointList.get(i);
             RectF rectF = mArcRectFList.get(i);
 
@@ -231,7 +231,7 @@ public class EvaluationAnalyseView extends View {
         }
     }
 
-    private void drawRightLine(Canvas canvas, Point point, int index, EvaluationAnalyseInfo analyzeInfo) {
+    private void drawRightLine(Canvas canvas, Point point, int index, CircleAnalyseInfo analyzeInfo) {
         int rightTopRadius = mLineTopMinRadius + mLineTopMinRadius * index;
         int rightTopHorizontalX = point.x + mLineTopMinLength + index * mArcPathWidth;
         int rightTopHorizontalY = point.y;
@@ -268,7 +268,7 @@ public class EvaluationAnalyseView extends View {
         drawRightText(canvas, rightBottomLeftX, rightVerticalBottomY, index, analyzeInfo);
     }
 
-    private void drawLeftLine(Canvas canvas, Point point, int index, EvaluationAnalyseInfo analyzeInfo) {
+    private void drawLeftLine(Canvas canvas, Point point, int index, CircleAnalyseInfo analyzeInfo) {
         int leftTopRadius = mLineTopMinRadius + mLineTopMinRadius * index;
         int leftTopHorizontalX = point.x - mLineTopMinLength - index * mArcPathWidth;
         int leftTopHorizontalY = point.y;
@@ -305,7 +305,7 @@ public class EvaluationAnalyseView extends View {
         drawLeftText(canvas, leftBottomRightX, leftVerticalBottomY, index, analyzeInfo);
     }
 
-    private void drawRightText(Canvas canvas, float startX, float startY, int index, EvaluationAnalyseInfo analyzeInfo) {
+    private void drawRightText(Canvas canvas, float startX, float startY, int index, CircleAnalyseInfo analyzeInfo) {
         String value = analyzeInfo.getValue();
         String rate = (int) (analyzeInfo.getRate() * 100) + "%";
         if (value != null && value.length() > 0) {
@@ -333,7 +333,7 @@ public class EvaluationAnalyseView extends View {
         }
     }
 
-    private void drawLeftText(Canvas canvas, float startX, float startY, int index, EvaluationAnalyseInfo analyzeInfo) {
+    private void drawLeftText(Canvas canvas, float startX, float startY, int index, CircleAnalyseInfo analyzeInfo) {
         String value = analyzeInfo.getValue();
         String rate = (int) (analyzeInfo.getRate() * 100) + "%";
         if (value != null && value.length() > 0) {

@@ -1,4 +1,4 @@
-package com.ldy.drawer.chart;
+package com.ldy.drawer.chart.view;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -12,6 +12,8 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.Transformation;
+
+import com.ldy.drawer.chart.R;
 
 /**
  * Created by lidongyang on 2017/10/18.

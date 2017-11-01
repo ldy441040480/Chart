@@ -1,4 +1,4 @@
-package com.ldy.drawer.chart;
+package com.ldy.drawer.chart.view.combo;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -9,6 +9,8 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.view.View;
+
+import com.ldy.drawer.chart.R;
 
 import java.util.ArrayList;
 

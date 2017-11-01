@@ -1,17 +1,17 @@
-package com.ldy.drawer.chart;
+package com.ldy.drawer.chart.view.analyse;
 
 /**
  * Created by lidongyang on 2017/10/20.
  */
-public class EvaluationAnalyseInfo {
+public class CircleAnalyseInfo {
 
     private String value;
     private float rate;
 
-    public EvaluationAnalyseInfo() {
+    public CircleAnalyseInfo() {
     }
 
-    public EvaluationAnalyseInfo(String value, float rate) {
+    public CircleAnalyseInfo(String value, float rate) {
         this.value = value;
         this.rate = rate;
     }
