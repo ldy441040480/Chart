@@ -35,7 +35,7 @@ public class CubeProgressView extends View {
     private static final float CUBE_MIN_RATE = 0.05f;
     private static final int CUBE_MAX = 100;
     private static final int CUBE_PROGRESS = 0;
-    private static final long CUBE_ANIM_DURATION = 500L;
+    private static final long CUBE_ANIM_DURATION = 1000L;
 
     private Paint mCubePaint;
     private Paint mCubeOvalPaint;
@@ -178,7 +178,7 @@ public class CubeProgressView extends View {
     }
 
     public void setCubeProgress(int progress) {
-        if (progress == mCubeProgress) {
+        if (progress != 0 && progress == mCubeProgress) {
             return;
         }
         if (progress < 0) {

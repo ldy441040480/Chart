@@ -63,7 +63,7 @@ public class MainActivity extends Activity {
         progressBar2.setCubeProgress(76);
 
         CubeProgressView progressBar3 = (CubeProgressView) findViewById(R.id.cube_progress_bar_3);
-        progressBar3.setCubeProgress(10);
+        progressBar3.setCubeProgress(50);
     }
 
     private void initArcHeaderView() {
